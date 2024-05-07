@@ -41,7 +41,6 @@ export default {
           title: '',
           description: '',
         },
-        showDescription: []
       }
     },
 
