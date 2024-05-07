@@ -20,7 +20,7 @@ def create_db():
 def check_string(string):
     if string is None:
         return False
-    return bool(re.match("^[a-zA-Z0-9 ]+$", string))
+    return bool(re.match("^[a-zA-Z0-9 -]+$", string))
 
 def check_id(id):
     if id is None:
