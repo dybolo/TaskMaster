@@ -45,10 +45,15 @@ def get_tasks():
 def create_task():
     title = json.loads(request.data).get('title')
     description = json.loads(request.data).get('description')
-
-    if ((not check_string(title)) or (not check_string(description))):
-        return jsonify({'status': 'failure', 'error': 'Invalid input'})
-
+    #check if title is empty
+    if title == '' or description == '':
+        return jsonify({'status': 'failure', 'error': 'Missing title or description'})
+    
+    if(not check_string(title)):
+        return jsonify({'status': 'failure', 'error': 'Invalid Task Name'})
+    
+    if(not check_string(description)):
+        return jsonify({'status': 'failure', 'error': 'Invalid Task Description'})
     answer = {}
     try:
         with sqlite3.connect("taskmaster.db") as conn:
