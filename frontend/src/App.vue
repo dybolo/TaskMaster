@@ -21,18 +21,24 @@
           <div class="w-64 bg-blue-300 shadow-md rounded-lg p-4 mb-4 hover:bg-blue-200 transition-colors duration-300">
             <h3> {{ task.title }} </h3>
             <div class="flex overscroll-contain overflow-auto text-gray-600 max-h-20 mt-2"> {{ task.description }} </div>
-            <button class="mt-5 animate-bounce"@click="completeTask(task.id)">
+            <button class="mt-5 animate-bounce" @click="completeTask(task.id)">
               <img class="w-7 h-7 rounded-full" src="./components/icons/complete.png" alt="Checkmark" />
             </button>
           </div>
         </li>
       </ul>
     </div>
+    <Modal v-if="errorModalVisible" :message="errorMessage" @modal-closed="errorModalVisible = false" />
   </div>
 </template>
 
 <script>
+import Modal from './components/Modal.vue';
+
 export default {
+    components: {
+      Modal,
+    },
     data() {
       return {
         tasks: [],
@@ -41,6 +47,8 @@ export default {
           title: '',
           description: '',
         },
+        errorModalVisible: false,
+        errorMessage: ''
       }
     },
 
@@ -80,7 +88,7 @@ export default {
               this.newTask.description = '';
             }
             else {
-              alert(data.error);
+              this.showModal(data.error);
             }
           });
       },
@@ -98,9 +106,13 @@ export default {
                 this.tasks = this.tasks.filter(task => task.id !== taskId);
             }
             else {
-                alert(data.error);
+              this.showModal(data.error);
             }
           });
+      },
+      showModal(message) {
+        this.errorMessage = message;
+        this.errorModalVisible = true;
       }
     },
 
